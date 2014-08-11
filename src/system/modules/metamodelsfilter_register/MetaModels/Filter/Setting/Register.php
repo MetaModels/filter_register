@@ -14,7 +14,13 @@
  * @license    LGPL.
  * @filesource
  */
+ 
+namespace MetaModels\Filter\Setting;
 
+use \MetaModels\Filter\IFilter as IMetaModelFilter;
+use \MetaModels\Filter\Rules\StaticIdList as MetaModelFilterRuleStaticIdList;
+use \MetaModels\Filter\Setting\SimpleLookup as MetaModelFilterSettingSimpleLookup;
+use \MetaModels\FrontendIntegration\FrontendFilterOptions as MetaModelFrontendFilterOptions;
 
 /**
  * Filter "register" for FE-filtering, based on filters by the MetaModels team.
@@ -23,8 +29,29 @@
  * @subpackage FilterRegister
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
  */
-class MetaModelFilterSettingRegister extends MetaModelFilterSettingSimpleLookup
+class Register extends Simple
 {
+	/**
+	 * Retrieve the filter parameter name to react on.
+	 *
+	 * @return string
+	*/
+	protected function getParamName()
+	{
+		if ($this->get('urlparam'))
+		{
+		    return $this->get('urlparam');
+		}
+
+		$objAttribute = $this->getMetaModel()->getAttributeById($this->get('attr_id'));
+		if ($objAttribute)
+		{
+		    return $objAttribute->getColName();
+		}
+
+		return null;
+	}
+
 	/**
 	 * Overrides the parent implementation to always return true, as this setting is always available for FE filtering.
 	 *
