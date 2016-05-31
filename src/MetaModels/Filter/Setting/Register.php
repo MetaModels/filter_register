@@ -1,23 +1,26 @@
 <?php
 
 /**
- * The MetaModels extension allows the creation of multiple collections of custom items,
- * each with its own unique set of selectable attributes, with attribute extendability.
- * The Front-End modules allow you to build powerful listing and filtering of the
- * data in each collection.
+ * This file is part of MetaModels/filter_register.
  *
- * PHP version 5
+ * (c) 2012-2016 The MetaModels team.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * This project is provided in good faith and hope to be usable by anyone.
+ *
  * @package    MetaModels
  * @subpackage FilterRegister
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
  * @author     Andreas Isaak <andy.jared@googlemail.com>
  * @author     Olli <olli17@gmx.net>
- * @copyright  The MetaModels team.
- * @license    LGPL.
+ * @copyright  2012-2016 The MetaModels team.
+ * @license    https://github.com/MetaModels/filter_register/blob/master/LICENSE LGPL-3.0
  * @filesource
  */
- 
+
 namespace MetaModels\Filter\Setting;
 
 use MetaModels\Attribute\IAttribute;
@@ -27,10 +30,6 @@ use MetaModels\FrontendIntegration\FrontendFilterOptions;
 
 /**
  * Filter "register" for FE-filtering, based on filters by the MetaModels team.
- *
- * @package    MetaModels
- * @subpackage FilterRegister
- * @author     Stefan Heimes <stefan_heimes@hotmail.com>
  */
 class Register extends Simple
 {
@@ -198,7 +197,6 @@ class Register extends Simple
             $this->getParamName() => $this->prepareFrontendFilterWidget(
                 array(
                     'label'     => array(
-                        // TODO: make this multilingual.
                         ($this->get('label') ? $this->get('label') : $objAttribute->getName()),
                         'GET: ' . $strParamName
                     ),
@@ -211,7 +209,7 @@ class Register extends Simple
                                                 && !$objFrontendFilterOptions->isHideClearFilter()),
                         'blankOptionLabel'   => &$GLOBALS['TL_LANG']['metamodels_frontendfilter']['do_not_filter'],
                         'multiple'           => true,
-                        'colname'            => $objAttribute->getColname(),
+                        'colname'            => $objAttribute->getColName(),
                         'urlparam'           => $strParamName,
                         'onlypossible'       => $this->get('onlypossible'),
                         'shownumbers'        => $this->get('shownumbers'),
