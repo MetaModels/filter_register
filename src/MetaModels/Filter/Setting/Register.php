@@ -31,7 +31,7 @@ use MetaModels\FrontendIntegration\FrontendFilterOptions;
 /**
  * Filter "register" for FE-filtering, based on filters by the MetaModels team.
  */
-class Register extends Simple
+class Register extends SimpleLookup
 {
     /**
      * Retrieve the filter parameter name to react on.
