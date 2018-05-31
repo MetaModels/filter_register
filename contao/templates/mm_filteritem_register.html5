@@ -45,12 +45,12 @@ asort($arrFullList);
 	?>
 		<li class="<?php echo $class; ?>">
 			<?php if($blnAvailable): ?>
-				<a href="<?php echo $arrOptions[$strListKey]['href']; ?>" class="<?php echo $class; ?>" title="<?php echo htmlentities(ucfirst($arrOptions[$strListKey]['value'])); ?>">
-					<?php echo htmlentities($arrOptions[$strListKey]['value']); ?><?php if($this->showCount): ?> <span class="count">(<?php echo $this->count[$strListKey]; ?>)</span><?php endif; ?>
+				<a href="<?= $arrOptions[$strListKey]['href']; ?>" class="<?= $class; ?>" title="<?= htmlentities(ucfirst($arrOptions[$strListKey]['value'])); ?>">
+					<?= htmlentities($arrOptions[$strListKey]['value']); ?><?php if($this->showCount): ?> <span class="count">(<?= $this->count[$strListKey]; ?>)</span><?php endif; ?>
 				</a>
 			<?php else: ?>
-				<span class="<?php echo $class; ?>" title="<?php echo ucfirst($strListKey); ?>">
-					<?php echo ucfirst($strListKey); ?><?php if($this->showCount): ?> <span class="count">(0)</span><?php endif; ?>
+				<span class="<?= $class; ?>" title="<?= ucfirst($strListKey); ?>">
+					<?= ucfirst($strListKey); ?><?php if($this->showCount): ?> <span class="count">(0)</span><?php endif; ?>
 				</span>
 			<?php endif; ?>
 		</li>

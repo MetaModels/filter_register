@@ -40,14 +40,14 @@ foreach($this->options as $strOptionKey => $arrOption)
 
             $class .= (strlen($option['class'])) ? ' ' . $option['class'] : '';
         ?>
-    <li class="<?php echo $class; ?>">
+    <li class="<?= $class; ?>">
         <?php if($blnAvailable): ?>
-            <a href="<?php echo $arrOptions[$strListKey]['href']; ?>" class="<?php echo $class; ?>" title="<?php echo ucfirst($arrOptions[$strListKey]['value']); ?>">
-                <?php echo $arrOptions[$strListKey]['value']; ?><?php if($this->showCount): ?> <span class="count">(<?php echo $this->count[$strListKey]; ?>)</span><?php endif; ?>
+            <a href="<?= $arrOptions[$strListKey]['href']; ?>" class="<?= $class; ?>" title="<?= ucfirst($arrOptions[$strListKey]['value']); ?>">
+                <?= $arrOptions[$strListKey]['value']; ?><?php if($this->showCount): ?> <span class="count">(<?= $this->count[$strListKey]; ?>)</span><?php endif; ?>
             </a>
         <?php else: ?>
-            <span class="<?php echo $class; ?>" title="<?php echo ucfirst($strListKey); ?>">
-                <?php echo ucfirst($strListKey); ?><?php if($this->showCount): ?> <span class="count">(0)</span><?php endif; ?>
+            <span class="<?= $class; ?>" title="<?= ucfirst($strListKey); ?>">
+                <?= ucfirst($strListKey); ?><?php if($this->showCount): ?> <span class="count">(0)</span><?php endif; ?>
             </span>
         <?php endif; ?>
     </li>
