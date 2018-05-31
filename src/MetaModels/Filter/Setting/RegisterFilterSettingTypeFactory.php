@@ -37,7 +37,7 @@ class RegisterFilterSettingTypeFactory extends AbstractFilterSettingTypeFactory
         $this
             ->setTypeName('register')
             ->setTypeIcon('system/modules/metamodelsfilter_register/html/filter_register.png')
-            ->setTypeClass('MetaModels\Filter\Setting\Register')
+            ->setTypeClass(Register::class)
             ->allowAttributeTypes('tabletext', 'translatedtext', 'text');
     }
 }
