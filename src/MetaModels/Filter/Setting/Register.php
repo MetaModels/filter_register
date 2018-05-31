@@ -25,8 +25,8 @@
 namespace MetaModels\Filter\Setting;
 
 use MetaModels\Attribute\IAttribute;
-use \MetaModels\Filter\IFilter as IMetaModelFilter;
-use \MetaModels\Filter\Rules\StaticIdList as MetaModelFilterRuleStaticIdList;
+use MetaModels\Filter\IFilter as IMetaModelFilter;
+use MetaModels\Filter\Rules\StaticIdList as MetaModelFilterRuleStaticIdList;
 use MetaModels\FrontendIntegration\FrontendFilterOptions;
 
 /**
@@ -79,7 +79,7 @@ class Register extends SimpleLookup
         $arrCurrent = (array) $arrWidget['value'];
         // toggle if active.
         if ($this->isActiveFrontendFilterValue($arrWidget, $arrFilterUrl, $strKeyOption)) {
-            $arrCurrent = array_diff($arrCurrent, array($strKeyOption));
+            $arrCurrent = array_diff($arrCurrent, [$strKeyOption]);
         } else {
             $arrCurrent[] = $strKeyOption;
         }
@@ -116,8 +116,8 @@ class Register extends SimpleLookup
             }
         }
 
-        $arrNewOptions = array();
-        $arrNewCount   = array();
+        $arrNewOptions = [];
+        $arrNewCount   = [];
 
         // Sort the values, first char uppercase.
         foreach ($arrOptions as $strOptionsKey => $strOptionValue) {
@@ -173,7 +173,7 @@ class Register extends SimpleLookup
     ) {
         $objAttribute = $this->getMetaModel()->getAttributeById($this->get('attr_id'));
 
-        $arrCount   = array();
+        $arrCount   = [];
         $arrOptions = $this->getParameterFilterOptions($objAttribute, $arrIds, $arrCount);
 
         $strParamName = $this->getParamName();
@@ -194,20 +194,20 @@ class Register extends SimpleLookup
 
         $GLOBALS['MM_FILTER_PARAMS'][] = $strParamName;
 
-        return array(
+        return [
             $this->getParamName() => $this->prepareFrontendFilterWidget(
-                array(
-                    'label'     => array(
+                [
+                    'label'     => [
                         ($this->get('label') ? $this->get('label') : $objAttribute->getName()),
                         'GET: ' . $strParamName
-                    ),
+                    ],
                     'inputType' => 'tags',
                     'options'   => $arrOptions,
                     'count'     => $arrCount,
                     'showCount' => $objFrontendFilterOptions->isShowCountValues(),
-                    'eval'      => array(
+                    'eval'      => [
                         'includeBlankOption' => ($this->get('blankoption')
-                                                && !$objFrontendFilterOptions->isHideClearFilter()),
+                                                 && !$objFrontendFilterOptions->isHideClearFilter()),
                         'blankOptionLabel'   => &$GLOBALS['TL_LANG']['metamodels_frontendfilter']['do_not_filter'],
                         'multiple'           => true,
                         'colname'            => $objAttribute->getColName(),
@@ -216,14 +216,14 @@ class Register extends SimpleLookup
                         'shownumbers'        => $this->get('shownumbers'),
                         'hideempty'          => $this->get('hideempty'),
                         'template'           => $this->get('template')
-                    ),
+                    ],
                     // we need to implode again to have it transported correctly in the frontend filter.
                     'urlvalue'  => !empty($arrParamValue) ? implode(',', $arrParamValue) : ''
-                ),
-                array(),
+                ],
+                [],
                 $arrJumpTo,
                 $objFrontendFilterOptions
             )
-        );
+        ];
     }
 }

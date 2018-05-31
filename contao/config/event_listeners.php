@@ -23,10 +23,10 @@ use MetaModels\Filter\Setting\Events\CreateFilterSettingFactoryEvent;
 use MetaModels\Filter\Setting\RegisterFilterSettingTypeFactory;
 use MetaModels\MetaModelsEvents;
 
-return array(
-    MetaModelsEvents::FILTER_SETTING_FACTORY_CREATE => array(
+return [
+    MetaModelsEvents::FILTER_SETTING_FACTORY_CREATE => [
         function (CreateFilterSettingFactoryEvent $event) {
             $event->getFactory()->addTypeFactory(new RegisterFilterSettingTypeFactory());
         }
-    )
-);
+    ]
+];
