@@ -68,7 +68,7 @@ class Register extends SimpleLookup
      */
     protected function isActiveFrontendFilterValue($arrWidget, $arrFilterUrl, $strKeyOption)
     {
-        return in_array($strKeyOption, (array) $arrWidget['value']) ? true : false;
+        return \in_array($strKeyOption, (array) $arrWidget['value']) ? true : false;
     }
 
     /**
@@ -79,11 +79,11 @@ class Register extends SimpleLookup
         $arrCurrent = (array) $arrWidget['value'];
         // toggle if active.
         if ($this->isActiveFrontendFilterValue($arrWidget, $arrFilterUrl, $strKeyOption)) {
-            $arrCurrent = array_diff($arrCurrent, [$strKeyOption]);
+            $arrCurrent = \array_diff($arrCurrent, [$strKeyOption]);
         } else {
             $arrCurrent[] = $strKeyOption;
         }
-        return implode(',', $arrCurrent);
+        return \implode(',', $arrCurrent);
     }
 
     /**
@@ -108,8 +108,8 @@ class Register extends SimpleLookup
         // Remove empty values.
         foreach ($arrOptions as $mixOptionKey => $mixOptions) {
             // Remove html/php tags.
-            $mixOptions = strip_tags($mixOptions);
-            $mixOptions = trim($mixOptions);
+            $mixOptions = \strip_tags($mixOptions);
+            $mixOptions = \trim($mixOptions);
 
             if ($mixOptions === '' || $mixOptions === null) {
                 unset($arrOptions[$mixOptionKey]);
@@ -125,9 +125,9 @@ class Register extends SimpleLookup
                 continue;
             }
 
-            $strFirstChar   = mb_substr($strOptionValue, 0, 1);
-            $charUpperFist  = ucfirst($strFirstChar);
-            $charLowerFirst = lcfirst($strFirstChar);
+            $strFirstChar   = \mb_substr($strOptionValue, 0, 1);
+            $charUpperFist  = \ucfirst($strFirstChar);
+            $charLowerFirst = \lcfirst($strFirstChar);
 
             $arrNewOptions[$charLowerFirst] = $charUpperFist;
             $arrNewCount[$charLowerFirst]   = ($arrNewCount[$charLowerFirst] + $arrCount[$strOptionsKey]);
@@ -179,15 +179,15 @@ class Register extends SimpleLookup
         $strParamName = $this->getParamName();
         // if we have a value, we have to explode it by comma to have a valid value which the active
         // checks may cope with.
-        if (array_key_exists($strParamName, $arrFilterUrl) && !empty($arrFilterUrl[$strParamName])) {
-            if (is_array($arrFilterUrl[$strParamName])) {
+        if (\array_key_exists($strParamName, $arrFilterUrl) && !empty($arrFilterUrl[$strParamName])) {
+            if (\is_array($arrFilterUrl[$strParamName])) {
                 $arrParamValue = $arrFilterUrl[$strParamName];
             } else {
-                $arrParamValue = explode(',', $arrFilterUrl[$strParamName]);
+                $arrParamValue = \explode(',', $arrFilterUrl[$strParamName]);
             }
 
             // ok, this is rather hacky here. The magic value of '--none--' means clear in the widget.
-            if (in_array('--none--', $arrParamValue)) {
+            if (\in_array('--none--', $arrParamValue)) {
                 $arrParamValue = null;
             }
         }
@@ -218,7 +218,7 @@ class Register extends SimpleLookup
                         'template'           => $this->get('template')
                     ],
                     // we need to implode again to have it transported correctly in the frontend filter.
-                    'urlvalue'  => !empty($arrParamValue) ? implode(',', $arrParamValue) : ''
+                    'urlvalue'  => !empty($arrParamValue) ? \implode(',', $arrParamValue) : ''
                 ],
                 [],
                 $arrJumpTo,
