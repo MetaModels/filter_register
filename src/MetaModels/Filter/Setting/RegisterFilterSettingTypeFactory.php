@@ -1,18 +1,22 @@
 <?php
+
 /**
- * The MetaModels extension allows the creation of multiple collections of custom items,
- * each with its own unique set of selectable attributes, with attribute extendability.
- * The Front-End modules allow you to build powerful listing and filtering of the
- * data in each collection.
+ * This file is part of MetaModels/filter_register.
  *
- * PHP version 5
+ * (c) 2012-2018 The MetaModels team.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * This project is provided in good faith and hope to be usable by anyone.
  *
  * @package    MetaModels
- * @subpackage FilterRange
+ * @subpackage FilterRegister
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     Marc Reimann <reimann@mediendepot-ruhr.de>
- * @copyright  The MetaModels team.
- * @license    LGPL.
+ * @author     Sven Baumann <baumann.sv@gmail.com>
+ * @copyright  2012-2018 The MetaModels team.
+ * @license    https://github.com/MetaModels/filter_register/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
 
@@ -33,7 +37,7 @@ class RegisterFilterSettingTypeFactory extends AbstractFilterSettingTypeFactory
         $this
             ->setTypeName('register')
             ->setTypeIcon('system/modules/metamodelsfilter_register/html/filter_register.png')
-            ->setTypeClass('MetaModels\Filter\Setting\Register')
+            ->setTypeClass(Register::class)
             ->allowAttributeTypes('tabletext', 'translatedtext', 'text');
     }
 }
