@@ -26,6 +26,9 @@ use Contao\ManagerPlugin\Bundle\Parser\ParserInterface;
 use MetaModels\CoreBundle\MetaModelsCoreBundle;
 use MetaModels\FilterRegisterBundle\MetaModelsFilterRegisterBundle;
 
+/**
+ * Class Plugin
+ */
 final class Plugin implements BundlePluginInterface
 {
     /**

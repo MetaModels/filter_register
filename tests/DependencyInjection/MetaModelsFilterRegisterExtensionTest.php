@@ -18,7 +18,7 @@
  * @filesource
  */
 
-namespace MetaModels\FilterCheckboxBundle\Test\DependencyInjection;
+namespace MetaModels\FilterRegisterBundle\Test\DependencyInjection;
 
 use MetaModels\FilterRegisterBundle\DependencyInjection\MetaModelsFilterRegisterExtension;
 use MetaModels\FilterRegisterBundle\FilterSetting\RegisterFilterSettingTypeFactory;

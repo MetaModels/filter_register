@@ -22,6 +22,9 @@ namespace MetaModels\FilterRegisterBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
+/**
+ * Class MetaModelsFilterRegisterBundle
+ */
 final class MetaModelsFilterRegisterBundle extends Bundle
 {
 }
