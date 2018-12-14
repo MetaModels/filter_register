@@ -4,7 +4,7 @@ services:
         tags:
           - { name: metamodels.filter_factory }
 
-    metamodels.filter_select.listener.filter_setting_renderer:
+    metamodels.filter_register.listener.filter_setting_renderer:
         class: MetaModels\FilterRegisterBundle\EventListener\RegisterFilterSettingTypeRendererListener
         arguments:
           - "@metamodels.filter_setting_factory"
