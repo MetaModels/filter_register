@@ -17,16 +17,18 @@
  * @author     Andreas Isaak <andy.jared@googlemail.com>
  * @author     Olli <olli17@gmx.net>
  * @author     Sven Baumann <baumann.sv@gmail.com>
+ * @author     David Molineus <david.molineus@netzmacht.de>
  * @copyright  2012-2018 The MetaModels team.
  * @license    https://github.com/MetaModels/filter_register/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
 
-namespace MetaModels\Filter\Setting;
+namespace MetaModels\FilterRegisterBundle\FilterSetting;
 
 use MetaModels\Attribute\IAttribute;
 use MetaModels\Filter\IFilter as IMetaModelFilter;
 use MetaModels\Filter\Rules\StaticIdList as MetaModelFilterRuleStaticIdList;
+use MetaModels\Filter\Setting\SimpleLookup;
 use MetaModels\FrontendIntegration\FrontendFilterOptions;
 
 /**
