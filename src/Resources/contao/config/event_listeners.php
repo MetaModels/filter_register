@@ -13,7 +13,6 @@
  * @package    MetaModels
  * @subpackage FilterRegister
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
- * @author     Marc Reimann <reimann@mediendepot-ruhr.de>
  * @author     Sven Baumann <baumann.sv@gmail.com>
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @copyright  2012-2018 The MetaModels team.
@@ -21,26 +20,14 @@
  * @filesource
  */
 
-namespace MetaModels\FilterRegisterBundle\FilterSetting;
+use MetaModels\Filter\Setting\Events\CreateFilterSettingFactoryEvent;
+use MetaModels\Filter\Setting\RegisterFilterSettingTypeFactory;
+use MetaModels\MetaModelsEvents;
 
-use MetaModels\Filter\Setting\AbstractFilterSettingTypeFactory;
-
-/**
- * Attribute type factory for from-to filter settings.
- */
-class RegisterFilterSettingTypeFactory extends AbstractFilterSettingTypeFactory
-{
-    /**
-     * {@inheritDoc}
-     */
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this
-            ->setTypeName('register')
-            ->setTypeIcon('bundles/metamodelsfilterregister/filter_register.png')
-            ->setTypeClass(Register::class)
-            ->allowAttributeTypes('tabletext', 'translatedtext', 'text');
-    }
-}
+return [
+    MetaModelsEvents::FILTER_SETTING_FACTORY_CREATE => [
+        function (CreateFilterSettingFactoryEvent $event) {
+            $event->getFactory()->addTypeFactory(new RegisterFilterSettingTypeFactory());
+        }
+    ]
+];

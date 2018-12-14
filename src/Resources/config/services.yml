@@ -1,0 +1,5 @@
+services:
+    metamodels.filter_register.factory:
+        class: MetaModels\FilterRegisterBundle\FilterSetting\RegisterFilterSettingTypeFactory
+        tags:
+          - { name: metamodels.filter_factory }
