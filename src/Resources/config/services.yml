@@ -3,3 +3,17 @@ services:
         class: MetaModels\FilterRegisterBundle\FilterSetting\RegisterFilterSettingTypeFactory
         tags:
           - { name: metamodels.filter_factory }
+
+    metamodels.filter_select.listener.filter_setting_renderer:
+        class: MetaModels\FilterRegisterBundle\EventListener\RegisterFilterSettingTypeRendererListener
+        arguments:
+          - "@metamodels.filter_setting_factory"
+          - "@event_dispatcher"
+          - "@metamodels.assets.icon_builder"
+          - "@cca.dc-general.scope-matcher"
+        tags:
+          - {
+              name: kernel.event_listener,
+              event: 'dc-general.view.contao2backend.model-to-label',
+              method: modelToLabel
+            }
