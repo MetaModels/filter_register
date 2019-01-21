@@ -1,5 +1,4 @@
-ignore:
-#  Mini Model <minimodel@metamodel.me>
+ignore: null
 
 exclude:
-  languages
+  - /^contao\/languages/
