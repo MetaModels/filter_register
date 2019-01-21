@@ -45,6 +45,11 @@
       "MetaModels\\": "src"
     }
   },
+  "autoload-dev": {
+    "psr-0": {
+      "MetaModels\\Test\\Filter\\Setting\\": "tests"
+    }
+  },
   "extra": {
     "contao": {
       "symlinks": {
