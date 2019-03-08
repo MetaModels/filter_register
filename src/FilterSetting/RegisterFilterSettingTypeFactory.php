@@ -22,7 +22,9 @@
 
 namespace MetaModels\FilterRegisterBundle\FilterSetting;
 
+use MetaModels\Filter\FilterUrlBuilder;
 use MetaModels\Filter\Setting\AbstractFilterSettingTypeFactory;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Attribute type factory for from-to filter settings.
@@ -30,9 +32,26 @@ use MetaModels\Filter\Setting\AbstractFilterSettingTypeFactory;
 class RegisterFilterSettingTypeFactory extends AbstractFilterSettingTypeFactory
 {
     /**
-     * {@inheritDoc}
+     * The event dispatcher.
+     *
+     * @var EventDispatcherInterface
      */
-    public function __construct()
+    private $dispatcher;
+
+    /**
+     * The filter URL builder.
+     *
+     * @var FilterUrlBuilder
+     */
+    private $filterUrlBuilder;
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param EventDispatcherInterface $dispatcher       The event dispatcher.
+     * @param FilterUrlBuilder         $filterUrlBuilder The filter URL builder.
+     */
+    public function __construct(EventDispatcherInterface $dispatcher, FilterUrlBuilder $filterUrlBuilder)
     {
         parent::__construct();
 
@@ -41,5 +60,21 @@ class RegisterFilterSettingTypeFactory extends AbstractFilterSettingTypeFactory
             ->setTypeIcon('bundles/metamodelsfilterregister/filter_register.png')
             ->setTypeClass(Register::class)
             ->allowAttributeTypes('tabletext', 'translatedtext', 'text');
+
+        $this->dispatcher       = $dispatcher;
+        $this->filterUrlBuilder = $filterUrlBuilder;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function createInstance($information, $filterSettings)
+    {
+        return new Register(
+            $filterSettings,
+            $information,
+            $this->dispatcher,
+            $this->filterUrlBuilder
+        );
     }
 }

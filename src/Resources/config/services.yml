@@ -1,6 +1,9 @@
 services:
     metamodels.filter_register.factory:
         class: MetaModels\FilterRegisterBundle\FilterSetting\RegisterFilterSettingTypeFactory
+        arguments:
+          - '@event_dispatcher'
+          - '@MetaModels\Filter\FilterUrlBuilder'
         tags:
           - { name: metamodels.filter_factory }
 
