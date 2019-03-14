@@ -11,21 +11,19 @@
  * This project is provided in good faith and hope to be usable by anyone.
  *
  * @package    MetaModels/filter_register
- * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
- * @author     Sven Baumann <baumann.sv@gmail.com>
+ * @author     David Molineus <david.molineus@netzmacht.de>
  * @copyright  2012-2019 The MetaModels team.
  * @license    https://github.com/MetaModels/filter_register/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
 
-use MetaModels\Filter\Setting\Events\CreateFilterSettingFactoryEvent;
-use MetaModels\Filter\Setting\RegisterFilterSettingTypeFactory;
-use MetaModels\MetaModelsEvents;
+namespace MetaModels\FilterRegisterBundle;
 
-return [
-    MetaModelsEvents::FILTER_SETTING_FACTORY_CREATE => [
-        function (CreateFilterSettingFactoryEvent $event) {
-            $event->getFactory()->addTypeFactory(new RegisterFilterSettingTypeFactory());
-        }
-    ]
-];
+use Symfony\Component\HttpKernel\Bundle\Bundle;
+
+/**
+ * Class MetaModelsFilterRegisterBundle
+ */
+final class MetaModelsFilterRegisterBundle extends Bundle
+{
+}

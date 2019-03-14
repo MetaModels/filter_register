@@ -17,12 +17,14 @@
  * @filesource
  */
 
-namespace MetaModels\Test\Filter\Setting;
+namespace MetaModels\FilterRegisterBundle\Test\FilterSetting;
 
+use MetaModels\Filter\FilterUrlBuilder;
 use MetaModels\Filter\Setting\ICollection;
-use MetaModels\Filter\Setting\Register;
-use MetaModels\Filter\Setting\RegisterFilterSettingTypeFactory;
+use MetaModels\FilterRegisterBundle\FilterSetting\Register;
+use MetaModels\FilterRegisterBundle\FilterSetting\RegisterFilterSettingTypeFactory;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * This tests the factory.
@@ -38,11 +40,14 @@ class RegisterFilterSettingTypeFactoryTest extends TestCase
      */
     public function testFactory()
     {
-        $factory = new RegisterFilterSettingTypeFactory();
+        $eventDispatcher  = $this->getMockForAbstractClass(EventDispatcherInterface::class);
+        $filterUrlBuilder = $this->getMockBuilder(FilterUrlBuilder::class)->disableOriginalConstructor()->getMock();
+
+        $factory = new RegisterFilterSettingTypeFactory($eventDispatcher, $filterUrlBuilder);
 
         $this->assertSame('register', $factory->getTypeName());
         $this->assertSame(
-            'system/modules/metamodelsfilter_register/html/filter_register.png',
+            'bundles/metamodelsfilterregister/filter_register.png',
             $factory->getTypeIcon()
         );
         $this->assertSame(['tabletext', 'translatedtext', 'text'], $factory->getKnownAttributeTypes());
@@ -55,8 +60,11 @@ class RegisterFilterSettingTypeFactoryTest extends TestCase
      */
     public function testCreateInstance()
     {
+        $eventDispatcher  = $this->getMockForAbstractClass(EventDispatcherInterface::class);
+        $filterUrlBuilder = $this->getMockBuilder(FilterUrlBuilder::class)->disableOriginalConstructor()->getMock();
+
         $collection = $this->getMockForAbstractClass(ICollection::class);
-        $factory    = new RegisterFilterSettingTypeFactory();
+        $factory    = new RegisterFilterSettingTypeFactory($eventDispatcher, $filterUrlBuilder);
 
         $this->assertInstanceOf(Register::class, $factory->createInstance([], $collection));
     }
