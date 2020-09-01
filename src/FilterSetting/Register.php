@@ -78,7 +78,7 @@ class Register extends SimpleLookup
      */
     protected function getFrontendFilterValue($arrWidget, $arrFilterUrl, $strKeyOption)
     {
-        $arrCurrent = \explode(',', $arrWidget['value']);
+        $arrCurrent = !empty($arrWidget['value']) ? \explode(',', $arrWidget['value']) : [];
 
         // Toggle if active.
         if ($this->isActiveFrontendFilterValue($arrWidget, $arrFilterUrl, $strKeyOption)) {
