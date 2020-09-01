@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/filter_register.
  *
- * (c) 2012-2019 The MetaModels team.
+ * (c) 2012-2020 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -16,7 +16,8 @@
  * @author     Andreas Isaak <andy.jared@googlemail.com>
  * @author     Sven Baumann <baumann.sv@gmail.com>
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2012-2019 The MetaModels team.
+ * @author     Ingolf Steinhardt <info@e-spin.de>
+ * @copyright  2012-2020 The MetaModels team.
  * @license    https://github.com/MetaModels/filter_register/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -33,6 +34,8 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metapalettes']['register exten
         'skipfilteroptions'
     ],
 ];
+
+$GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['template']['default'] = 'mm_filteritem_register';
 
 $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['shownumbers'] = [
     'label'                   => &$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['shownumbers'],
