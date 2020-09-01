@@ -1,58 +1,64 @@
 <?php
-if($this->raw['eval']['shownumbers'])
-	$arrFullList = array_merge(range(0,9), range('a', 'z'));
-else
-	$arrFullList = range('a', 'z');
+if ($this->raw['eval']['shownumbers']) {
+    $arrFullList = array_merge(range(0, 9), range('a', 'z'));
+} else {
+    $arrFullList = range('a', 'z');
+}
 
 $arrOptions = [];
-foreach($this->options as $strOptionKey => $arrOption)
-	$arrOptions[$arrOption['key']] = $arrOption;
+foreach ($this->options as $strOptionKey => $arrOption) {
+    $arrOptions[$arrOption['key']] = $arrOption;
+}
 
-foreach(array_diff(array_keys($arrOptions), $arrFullList) as $strRest)
-{
-	if($strRest == '')
-		continue;
+foreach (array_diff(array_keys($arrOptions), $arrFullList) as $strRest) {
+    if ($strRest == '') {
+        continue;
+    }
 
-	$arrFullList[] = $strRest;
+    $arrFullList[] = $strRest;
 }
 
 asort($arrFullList);
 ?>
 
 <ul>
-	<?php
-	$i = 0; $last = count($this->options) - 1;
-	foreach($arrFullList as $strListKey):
-		// Hide empty values if activate.
-		if($this->raw['eval']['hideempty'] && !array_key_exists($strListKey, $arrOptions)) continue;
-		// Build the css class.
-		$class = (!$i) ? 'first ' : '';
-		$class .= ($i == $last) ? 'last ' : '';
-		$class .= ($i++ % 2) ? 'even' : 'odd';
-		// Check if available.
-		if(array_key_exists($strListKey, $arrOptions))
-		{
-			$blnAvailable = true;
-			$class .= ' available';
-		}
-		else
-		{
-			$blnAvailable = false;
-			$class .= ' unavailable';
-		}
+    <?php
+    $i    = 0;
+    $last = count($this->options) - 1;
+    foreach ($arrFullList as $strListKey):
+        // Hide empty values if activate.
+        if ($this->raw['eval']['hideempty'] && !array_key_exists($strListKey, $arrOptions)) {
+            continue;
+        }
+        // Build the css class.
+        $class = (!$i) ? 'first ' : '';
+        $class .= ($i == $last) ? 'last ' : '';
+        $class .= ($i++ % 2) ? 'even' : 'odd';
 
-		$class .= (strlen($option['class'])) ? ' ' . $option['class'] : '';
-	?>
-		<li class="<?php echo $class; ?>">
-			<?php if($blnAvailable): ?>
-				<a href="<?= $arrOptions[$strListKey]['href']; ?>" class="<?= $class; ?>" title="<?= htmlentities(ucfirst($arrOptions[$strListKey]['value'])); ?>">
-					<?= htmlentities($arrOptions[$strListKey]['value']); ?><?php if($this->showCount): ?> <span class="count">(<?= $this->count[$strListKey]; ?>)</span><?php endif; ?>
-				</a>
-			<?php else: ?>
-				<span class="<?= $class; ?>" title="<?= ucfirst($strListKey); ?>">
-					<?= ucfirst($strListKey); ?><?php if($this->showCount): ?> <span class="count">(0)</span><?php endif; ?>
-				</span>
-			<?php endif; ?>
-		</li>
-	<?php endforeach; ?>
+        // Check if available (for 'hideempty' false).
+        if (array_key_exists($strListKey, $arrOptions)) {
+            $blnAvailable = true;
+            $class        .= ' ' . $arrOptions[$strListKey]['class'];
+            $class        .= ' available';
+        } else {
+            $blnAvailable = false;
+            $class        .= ' ' . $strListKey;
+            $class        .= ' unavailable';
+        }
+        ?>
+        <li class="<?php echo $class; ?>">
+            <?php if ($blnAvailable): ?>
+                <a href="<?= $arrOptions[$strListKey]['href']; ?>" class="<?= $class; ?>"
+                   title="<?= htmlentities(ucfirst($arrOptions[$strListKey]['value'])); ?>">
+                    <?= htmlentities($arrOptions[$strListKey]['value']); ?><?php if ($this->showCount): ?> <span
+                            class="count">(<?= $this->count[$strListKey]; ?>)</span><?php endif; ?>
+                </a>
+            <?php else: ?>
+                <span class="<?= $class; ?>" title="<?= ucfirst($strListKey); ?>">
+                    <?= ucfirst($strListKey); ?><?php if ($this->showCount): ?> <span
+                            class="count">(0)</span><?php endif; ?>
+                </span>
+            <?php endif; ?>
+        </li>
+    <?php endforeach; ?>
 </ul>
