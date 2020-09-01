@@ -70,7 +70,7 @@ class Register extends SimpleLookup
      */
     protected function isActiveFrontendFilterValue($arrWidget, $arrFilterUrl, $strKeyOption)
     {
-        return \in_array($strKeyOption, (array) $arrWidget['value']) ? true : false;
+        return \in_array($strKeyOption, \explode(',', $arrWidget['value'])) ? true : false;
     }
 
     /**
@@ -78,13 +78,15 @@ class Register extends SimpleLookup
      */
     protected function getFrontendFilterValue($arrWidget, $arrFilterUrl, $strKeyOption)
     {
-        $arrCurrent = (array) $arrWidget['value'];
-        // toggle if active.
+        $arrCurrent = \explode(',', $arrWidget['value']);
+
+        // Toggle if active.
         if ($this->isActiveFrontendFilterValue($arrWidget, $arrFilterUrl, $strKeyOption)) {
             $arrCurrent = \array_diff($arrCurrent, [$strKeyOption]);
         } else {
             $arrCurrent[] = $strKeyOption;
         }
+
         return \implode(',', $arrCurrent);
     }
 
