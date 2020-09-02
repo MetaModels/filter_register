@@ -30,6 +30,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metapalettes']['register exten
         'template',
         'shownumbers',
         'hideempty',
+        'filtermultiple',
         'onlypossible',
         'skipfilteroptions'
     ],
@@ -43,7 +44,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['shownumbers'] = [
     'default'                 => true,
     'inputType'               => 'checkbox',
     'eval'                    => [
-        'tl_class'            => 'clr w50',
+        'tl_class'            => 'clr w50 cbx m12',
     ],
     'sql'                     => 'char(1) NOT NULL default \'1\''
 ];
@@ -54,7 +55,18 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['hideempty'] = [
     'default'                 => true,
     'inputType'               => 'checkbox',
     'eval'                    => [
-        'tl_class'            => 'w50',
+        'tl_class'            => 'w50 cbx m12',
+    ],
+    'sql'                     => 'char(1) NOT NULL default \'1\''
+];
+
+$GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['filtermultiple'] = [
+    'label'                   => &$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['allowmultiple'],
+    'exclude'                 => true,
+    'default'                 => false,
+    'inputType'               => 'checkbox',
+    'eval'                    => [
+        'tl_class'            => 'w50 cbx',
     ],
     'sql'                     => 'char(1) NOT NULL default \'1\''
 ];
@@ -65,7 +77,18 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['onlypossible'] = [
     'default'                 => true,
     'inputType'               => 'checkbox',
     'eval'                    => [
-        'tl_class'            => 'w50',
+        'tl_class'            => 'clr w50 m12',
+    ],
+    'sql'                     => 'char(1) NOT NULL default \'1\''
+];
+
+$GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['skipfilteroptions'] = [
+    'label'                   => &$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['skipfilteroptions'],
+    'exclude'                 => true,
+    'default'                 => false,
+    'inputType'               => 'checkbox',
+    'eval'                    => [
+        'tl_class'            => 'w50 m12',
     ],
     'sql'                     => 'char(1) NOT NULL default \'1\''
 ];
