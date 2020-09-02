@@ -78,16 +78,27 @@ class Register extends SimpleLookup
      */
     protected function getFrontendFilterValue($arrWidget, $arrFilterUrl, $strKeyOption)
     {
-        $arrCurrent = !empty($arrWidget['value']) ? \explode(',', $arrWidget['value']) : [];
+        if ($this->get('filtermultiple')) {
+            $arrCurrent = !empty($arrWidget['value']) ? \explode(',', $arrWidget['value']) : [];
 
-        // Toggle if active.
-        if ($this->isActiveFrontendFilterValue($arrWidget, $arrFilterUrl, $strKeyOption)) {
-            $arrCurrent = \array_diff($arrCurrent, [$strKeyOption]);
-        } else {
-            $arrCurrent[] = $strKeyOption;
+            // toggle if active.
+            if ($this->isActiveFrontendFilterValue($arrWidget, $arrFilterUrl, $strKeyOption)) {
+                $arrCurrent = \array_diff($arrCurrent, [$strKeyOption]);
+            } else {
+                $arrCurrent[] = $strKeyOption;
+            }
+
+            return \implode(',', $arrCurrent);
         }
 
-        return \implode(',', $arrCurrent);
+        // toggle if active.
+        if ($this->isActiveFrontendFilterValue($arrWidget, $arrFilterUrl, $strKeyOption)) {
+            $current = '';
+        } else {
+            $current = $strKeyOption;
+        }
+
+        return $current;
     }
 
     /**
@@ -152,10 +163,12 @@ class Register extends SimpleLookup
         $objAttribute  = $objMetaModel->getAttributeById($this->get('attr_id'));
         $strParamName  = $this->getParamName();
         $strParamValue = $arrFilterUrl[$strParamName];
-        $strWhat       = $strParamValue . '%';
 
         if ($objAttribute && $strParamName && $strParamValue) {
-            $arrIds = $objAttribute->searchFor($strWhat);
+            $arrIds = [];
+            foreach (\explode(',', $strParamValue) as $paramKey) {
+                $arrIds = array_merge($arrIds, $objAttribute->searchFor($paramKey . '%'));
+            }
             $objFilter->addFilterRule(new MetaModelFilterRuleStaticIdList($arrIds));
             return;
         }
