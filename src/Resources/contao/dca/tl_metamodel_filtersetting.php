@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/filter_register.
  *
- * (c) 2012-2020 The MetaModels team.
+ * (c) 2012-2021 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,7 +17,7 @@
  * @author     Sven Baumann <baumann.sv@gmail.com>
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @author     Ingolf Steinhardt <info@e-spin.de>
- * @copyright  2012-2020 The MetaModels team.
+ * @copyright  2012-2021 The MetaModels team.
  * @license    https://github.com/MetaModels/filter_register/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -36,12 +36,10 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metapalettes']['register exten
     ],
 ];
 
-$GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['template']['default'] = 'mm_filteritem_register';
-
 $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['shownumbers'] = [
     'label'                   => &$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['shownumbers'],
     'exclude'                 => true,
-    'default'                 => true,
+    'default'                 => '1',
     'inputType'               => 'checkbox',
     'eval'                    => [
         'tl_class'            => 'clr w50 cbx m12',
@@ -52,7 +50,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['shownumbers'] = [
 $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['hideempty'] = [
     'label'                   => &$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['hideempty'],
     'exclude'                 => true,
-    'default'                 => true,
+    'default'                 => '1',
     'inputType'               => 'checkbox',
     'eval'                    => [
         'tl_class'            => 'w50 cbx m12',
@@ -68,13 +66,13 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['filtermultiple'] = [
     'eval'                    => [
         'tl_class'            => 'w50 cbx',
     ],
-    'sql'                     => 'char(1) NOT NULL default \'1\''
+    'sql'                     => 'char(1) NOT NULL default \'\''
 ];
 
 $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['onlypossible'] = [
     'label'                   => &$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['onlypossible'],
     'exclude'                 => true,
-    'default'                 => true,
+    'default'                 => '1',
     'inputType'               => 'checkbox',
     'eval'                    => [
         'tl_class'            => 'clr w50 m12',
@@ -90,5 +88,5 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['skipfilteroptions'] 
     'eval'                    => [
         'tl_class'            => 'w50 m12',
     ],
-    'sql'                     => 'char(1) NOT NULL default \'1\''
+    'sql'                     => 'char(1) NOT NULL default \'\''
 ];
