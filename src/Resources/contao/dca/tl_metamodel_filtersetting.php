@@ -27,6 +27,7 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metapalettes']['register exten
         'attr_id',
         'urlparam',
         'label',
+        'hide_label',
         'template',
         'shownumbers',
         'hideempty',
