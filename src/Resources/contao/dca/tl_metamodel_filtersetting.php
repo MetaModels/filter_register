@@ -33,7 +33,8 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['metapalettes']['register exten
         'hideempty',
         'filtermultiple',
         'onlypossible',
-        'skipfilteroptions'
+        'skipfilteroptions',
+        'cssID'
     ],
 ];
 
