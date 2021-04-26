@@ -127,8 +127,8 @@ class Register extends SimpleLookup
             }
 
             $strFirstChar   = \mb_substr($strOptionValue, 0, 1);
-            $charUpperFist  = \ucfirst($strFirstChar);
-            $charLowerFirst = \lcfirst($strFirstChar);
+            $charUpperFist  = \mb_strtoupper($strFirstChar);
+            $charLowerFirst = \mb_strtolower($strFirstChar);
 
             $arrNewOptions[$charLowerFirst] = $charUpperFist;
             $arrNewCount[$charLowerFirst]   = ($arrNewCount[$charLowerFirst] + $arrCount[$strOptionsKey]);
