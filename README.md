@@ -7,4 +7,4 @@
 Filter to display a register
 ============================
 
-MetaModels register filter
+MetaModels register filter - Filtering by first letter or number of a text.
