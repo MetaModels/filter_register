@@ -18,6 +18,7 @@
  * @author     Sven Baumann <baumann.sv@gmail.com>
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @author     Ingolf Steinhardt <info@e-spin.de>
+ * @author     Markus Nestmann <markus.nestmann@outlook.com>
  * @copyright  2012-2020 The MetaModels team.
  * @license    https://github.com/MetaModels/filter_register/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
@@ -141,8 +142,8 @@ class Register extends SimpleLookup
             }
 
             $strFirstChar   = \mb_substr($strOptionValue, 0, 1);
-            $charUpperFist  = \ucfirst($strFirstChar);
-            $charLowerFirst = \lcfirst($strFirstChar);
+            $charUpperFist  = \mb_strtoupper($strFirstChar);
+            $charLowerFirst = \mb_strtolower($strFirstChar);
 
             $arrNewOptions[$charLowerFirst] = $charUpperFist;
             $arrNewCount[$charLowerFirst]   = ($arrNewCount[$charLowerFirst] + $arrCount[$strOptionsKey]);
