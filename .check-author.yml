@@ -3,3 +3,6 @@ ignore:
 
 exclude:
   - /^src\/Resources\/contao\/languages/
+
+mapping:
+  'Markus Nestmann <markus.nestmann@outlook.com>': 'Markus Nestmann <38976632+MarkejN@users.noreply.github.com>'
