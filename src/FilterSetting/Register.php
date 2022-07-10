@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/filter_register.
  *
- * (c) 2012-2020 The MetaModels team.
+ * (c) 2012-2022 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -19,7 +19,7 @@
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @author     Ingolf Steinhardt <info@e-spin.de>
  * @author     Markus Nestmann <markus.nestmann@outlook.com>
- * @copyright  2012-2020 The MetaModels team.
+ * @copyright  2012-2022 The MetaModels team.
  * @license    https://github.com/MetaModels/filter_register/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -48,7 +48,7 @@ class Register extends SimpleLookup
             return $this->get('urlparam');
         }
 
-        $objAttribute = $this->getMetaModel()->getAttributeById($this->get('attr_id'));
+        $objAttribute = $this->getMetaModel()->getAttributeById((int) $this->get('attr_id'));
         if ($objAttribute) {
             return $objAttribute->getColName();
         }
@@ -161,7 +161,7 @@ class Register extends SimpleLookup
     public function prepareRules(IMetaModelFilter $objFilter, $arrFilterUrl)
     {
         $objMetaModel  = $this->getMetaModel();
-        $objAttribute  = $objMetaModel->getAttributeById($this->get('attr_id'));
+        $objAttribute  = $objMetaModel->getAttributeById((int) $this->get('attr_id'));
         $strParamName  = $this->getParamName();
         $strParamValue = $arrFilterUrl[$strParamName];
 
@@ -189,7 +189,7 @@ class Register extends SimpleLookup
         $arrJumpTo,
         FrontendFilterOptions $objFrontendFilterOptions
     ) {
-        $objAttribute = $this->getMetaModel()->getAttributeById($this->get('attr_id'));
+        $objAttribute = $this->getMetaModel()->getAttributeById((int) $this->get('attr_id'));
 
         $arrCount   = [];
         $arrOptions = $this->getParameterFilterOptions($objAttribute, $arrIds, $arrCount);
@@ -216,7 +216,7 @@ class Register extends SimpleLookup
             $this->getParamName() => $this->prepareFrontendFilterWidget(
                 [
                     'label'     => [
-                        ($this->get('label') ? $this->get('label') : $objAttribute->getName()),
+                        $this->getLabel(),
                         'GET: ' . $strParamName
                     ],
                     'inputType' => 'tags',
