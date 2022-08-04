@@ -146,7 +146,7 @@ class Register extends SimpleLookup
             $charLowerFirst = \mb_strtolower($strFirstChar);
 
             $arrNewOptions[$charLowerFirst] = $charUpperFist;
-            $arrNewCount[$charLowerFirst]   = ($arrNewCount[$charLowerFirst] + $arrCount[$strOptionsKey]);
+            $arrNewCount[$charLowerFirst]   = ($arrNewCount[$charLowerFirst] ?? 0 + $arrCount[$strOptionsKey]);
         }
 
         $arrOptions = $arrNewOptions;
@@ -163,7 +163,7 @@ class Register extends SimpleLookup
         $objMetaModel  = $this->getMetaModel();
         $objAttribute  = $objMetaModel->getAttributeById((int) $this->get('attr_id'));
         $strParamName  = $this->getParamName();
-        $strParamValue = $arrFilterUrl[$strParamName];
+        $strParamValue = $arrFilterUrl[$strParamName] ?? '';
 
         if ($objAttribute && $strParamName && $strParamValue) {
             $arrIds = [];
