@@ -6,3 +6,8 @@ exclude:
 
 mapping:
   'Markus Nestmann <markus.nestmann@outlook.com>': 'Markus Nestmann <38976632+MarkejN@users.noreply.github.com>'
+  'Ingolf Steinhardt <info@e-spin.de>':
+    - 'sandokan <info@e-spin.de>'
+    - 'info@e-spin.de <info@e-spin.de>'
+    - 'zonky2 <info@e-spin.de>'
+

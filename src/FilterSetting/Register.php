@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/filter_register.
  *
- * (c) 2012-2019 The MetaModels team.
+ * (c) 2012-2020 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,8 +17,9 @@
  * @author     Olli <olli17@gmx.net>
  * @author     Sven Baumann <baumann.sv@gmail.com>
  * @author     David Molineus <david.molineus@netzmacht.de>
+ * @author     Ingolf Steinhardt <info@e-spin.de>
  * @author     Markus Nestmann <markus.nestmann@outlook.com>
- * @copyright  2012-2019 The MetaModels team.
+ * @copyright  2012-2020 The MetaModels team.
  * @license    https://github.com/MetaModels/filter_register/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -70,7 +71,7 @@ class Register extends SimpleLookup
      */
     protected function isActiveFrontendFilterValue($arrWidget, $arrFilterUrl, $strKeyOption)
     {
-        return \in_array($strKeyOption, (array) $arrWidget['value']) ? true : false;
+        return \in_array($strKeyOption, \explode(',', $arrWidget['value'])) ? true : false;
     }
 
     /**
@@ -78,14 +79,27 @@ class Register extends SimpleLookup
      */
     protected function getFrontendFilterValue($arrWidget, $arrFilterUrl, $strKeyOption)
     {
-        $arrCurrent = (array) $arrWidget['value'];
+        if ($this->get('filtermultiple')) {
+            $arrCurrent = !empty($arrWidget['value']) ? \explode(',', $arrWidget['value']) : [];
+
+            // toggle if active.
+            if ($this->isActiveFrontendFilterValue($arrWidget, $arrFilterUrl, $strKeyOption)) {
+                $arrCurrent = \array_diff($arrCurrent, [$strKeyOption]);
+            } else {
+                $arrCurrent[] = $strKeyOption;
+            }
+
+            return \implode(',', $arrCurrent);
+        }
+
         // toggle if active.
         if ($this->isActiveFrontendFilterValue($arrWidget, $arrFilterUrl, $strKeyOption)) {
-            $arrCurrent = \array_diff($arrCurrent, [$strKeyOption]);
+            $current = '';
         } else {
-            $arrCurrent[] = $strKeyOption;
+            $current = $strKeyOption;
         }
-        return \implode(',', $arrCurrent);
+
+        return $current;
     }
 
     /**
@@ -150,10 +164,12 @@ class Register extends SimpleLookup
         $objAttribute  = $objMetaModel->getAttributeById($this->get('attr_id'));
         $strParamName  = $this->getParamName();
         $strParamValue = $arrFilterUrl[$strParamName];
-        $strWhat       = $strParamValue . '%';
 
         if ($objAttribute && $strParamName && $strParamValue) {
-            $arrIds = $objAttribute->searchFor($strWhat);
+            $arrIds = [];
+            foreach (\explode(',', $strParamValue) as $paramKey) {
+                $arrIds = array_merge($arrIds, $objAttribute->searchFor($paramKey . '%'));
+            }
             $objFilter->addFilterRule(new MetaModelFilterRuleStaticIdList($arrIds));
             return;
         }
@@ -222,7 +238,7 @@ class Register extends SimpleLookup
                     // we need to implode again to have it transported correctly in the frontend filter.
                     'urlvalue'  => !empty($arrParamValue) ? \implode(',', $arrParamValue) : ''
                 ],
-                [],
+                $arrFilterUrl,
                 $arrJumpTo,
                 $objFrontendFilterOptions
             )
