@@ -1,20 +1,28 @@
 <?php
 /**
- * Translations are managed using Transifex. To create a new translation
+ * This file is part of MetaModels/filter_register.
+ *
+ * (c) 2012-2023 The MetaModels team.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ *
+ * This project is provided in good faith and hope to be usable by anyone.
+ *
+ * Translations are managed automatically using Transifex. To create a new translation
  * or to help to maintain an existing one, please register at transifex.com.
  *
- * @link http://help.transifex.com/intro/translating.html
- * @link https://www.transifex.com/projects/p/metamodels/language/ru/
+ * Last-updated: 2023-02-01T16:23:22+00:00
  *
- * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
- *
- * last-updated: 2015-07-11T08:03:58+02:00
+ * @copyright 2012-2023 The MetaModels team.
+ * @license   https://github.com/MetaModels/filter_register/blob/master/LICENSE LGPL-3.0-or-later
+ * @link      https://www.transifex.com/metamodels/public/
+ * @link      https://www.transifex.com/signup/?join_project=metamodels
  */
+
 
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['hideempty']['0']        = 'Скрыть пустые значения';
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['hideempty']['1']        = 'Вы можете выбрать, должны скрываться пустые значения в списке или нет.';
-$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['onlypossible']['0']     = 'Только остальные теги';
-$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['onlypossible']['1']     = 'Показывать только параметры, для которых есть результат после применения этого фильтра.';
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['shownumbers']['0']      = 'Показать числа';
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['shownumbers']['1']      = 'Вы можете выбрать, должны показываться цифры или нет.';
 $GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['typenames']['register'] = 'Регистрация';
