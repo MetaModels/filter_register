@@ -20,19 +20,25 @@ foreach (array_diff(array_keys($arrOptions), $arrFullList) as $strRest) {
 
 asort($arrFullList);
 ?>
-
+<?php $this->extend('mm_filteritem_default'); ?>
+<?php $this->block('formlabel'); ?>
+<?php if (!$this->hide_label): ?>
+    <?= $this->label ?>
+<?php endif; ?>
+<?php $this->endblock(); ?>
+<?php $this->block('formfield'); ?>
 <ul>
     <?php
     $i    = 0;
     $last = count($this->options) - 1;
     foreach ($arrFullList as $strListKey):
-        // Hide empty values if activate.
+        // Hide empty values if activated.
         if ($this->raw['eval']['hideempty'] && !array_key_exists($strListKey, $arrOptions)) {
             continue;
         }
         // Build the css class.
         $class = (!$i) ? 'first ' : '';
-        $class .= ($i == $last) ? 'last ' : '';
+        $class .= ($i === $last) ? 'last ' : '';
         $class .= ($i++ % 2) ? 'even' : 'odd';
 
         // Check if available (for 'hideempty' false).
@@ -63,3 +69,4 @@ asort($arrFullList);
         </li>
     <?php endforeach; ?>
 </ul>
+<?php $this->endblock(); ?>
