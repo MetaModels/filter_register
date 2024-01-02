@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/filter_register.
  *
- * (c) 2012-2022 The MetaModels team.
+ * (c) 2012-2024 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -19,7 +19,7 @@
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @author     Ingolf Steinhardt <info@e-spin.de>
  * @author     Markus Nestmann <markus.nestmann@outlook.com>
- * @copyright  2012-2022 The MetaModels team.
+ * @copyright  2012-2024 The MetaModels team.
  * @license    https://github.com/MetaModels/filter_register/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -28,6 +28,7 @@ namespace MetaModels\FilterRegisterBundle\FilterSetting;
 
 use MetaModels\Attribute\IAttribute;
 use MetaModels\Filter\IFilter as IMetaModelFilter;
+use MetaModels\Filter\Rules\StaticIdList;
 use MetaModels\Filter\Rules\StaticIdList as MetaModelFilterRuleStaticIdList;
 use MetaModels\Filter\Setting\SimpleLookup;
 use MetaModels\FrontendIntegration\FrontendFilterOptions;
@@ -40,7 +41,7 @@ class Register extends SimpleLookup
     /**
      * Retrieve the filter parameter name to react on.
      *
-     * @return string
+     * @return string|null
      */
     protected function getParamName()
     {
@@ -105,11 +106,9 @@ class Register extends SimpleLookup
     /**
      * Generate the filter options for the parameters.
      *
-     * @param IAttribute $objAttribute The attribute to fetch the values from.
-     *
-     * @param array      $arrIds       The id list to limit the results to.
-     *
-     * @param null|array $arrCount     The array to use for storing the count.
+     * @param IAttribute    $objAttribute The attribute to fetch the values from.
+     * @param string[]|null $arrIds       The id list to limit the results to.
+     * @param null|array    $arrCount     The array to use for storing the count.
      *
      * @return array
      */
@@ -124,10 +123,9 @@ class Register extends SimpleLookup
         // Remove empty values.
         foreach ($arrOptions as $mixOptionKey => $mixOptions) {
             // Remove html/php tags.
-            $mixOptions = \strip_tags($mixOptions);
-            $mixOptions = \trim($mixOptions);
+            $mixOptions = \trim(\strip_tags($mixOptions));
 
-            if ($mixOptions === '' || $mixOptions === null) {
+            if ($mixOptions === '') {
                 unset($arrOptions[$mixOptionKey]);
             }
         }
@@ -137,7 +135,7 @@ class Register extends SimpleLookup
 
         // Sort the values, first char uppercase.
         foreach ($arrOptions as $strOptionsKey => $strOptionValue) {
-            if ($strOptionsKey == '-') {
+            if ($strOptionsKey === '-') {
                 continue;
             }
 
@@ -146,7 +144,7 @@ class Register extends SimpleLookup
             $charLowerFirst = \mb_strtolower($strFirstChar);
 
             $arrNewOptions[$charLowerFirst] = $charUpperFist;
-            $arrNewCount[$charLowerFirst]   = ($arrNewCount[$charLowerFirst] ?? 0 + $arrCount[$strOptionsKey]);
+            $arrNewCount[$charLowerFirst]   = (($arrNewCount[$charLowerFirst] ?? 0) + ($arrCount[$strOptionsKey] ?? 0));
         }
 
         $arrOptions = $arrNewOptions;
@@ -163,12 +161,20 @@ class Register extends SimpleLookup
         $objMetaModel  = $this->getMetaModel();
         $objAttribute  = $objMetaModel->getAttributeById((int) $this->get('attr_id'));
         $strParamName  = $this->getParamName();
-        $strParamValue = $arrFilterUrl[$strParamName] ?? '';
+        assert(\is_string($strParamName));
+        $strParamValue = $arrFilterUrl[$strParamName];
 
-        if ($objAttribute && $strParamName && $strParamValue) {
+        // Check if we have a valid value.
+        if (!$objAttribute) {
+            $objFilter->addFilterRule(new StaticIdList(null));
+
+            return;
+        }
+
+        if ($strParamValue) {
             $arrIds = [];
             foreach (\explode(',', $strParamValue) as $paramKey) {
-                $arrIds = array_merge($arrIds, $objAttribute->searchFor($paramKey . '%'));
+                $arrIds = \array_merge($arrIds, $objAttribute->searchFor($paramKey . '%'));
             }
             $objFilter->addFilterRule(new MetaModelFilterRuleStaticIdList($arrIds));
             return;
@@ -182,6 +188,7 @@ class Register extends SimpleLookup
      *
      * @SuppressWarnings(PHPMD.Superglobals)
      * @SuppressWarnings(PHPMD.CamelCaseVariableName)
+     * @SuppressWarnings(PHPMD.LongVariable)
      */
     public function getParameterFilterWidgets(
         $arrIds,
@@ -190,11 +197,14 @@ class Register extends SimpleLookup
         FrontendFilterOptions $objFrontendFilterOptions
     ) {
         $objAttribute = $this->getMetaModel()->getAttributeById((int) $this->get('attr_id'));
+        if (!$objAttribute) {
+            return [];
+        }
 
         $arrCount   = [];
         $arrOptions = $this->getParameterFilterOptions($objAttribute, $arrIds, $arrCount);
 
-        $strParamName = $this->getParamName();
+        $strParamName = $this->getParamName() ?? '';
         // if we have a value, we have to explode it by comma to have a valid value which the active
         // checks may cope with.
         if (\array_key_exists($strParamName, $arrFilterUrl) && !empty($arrFilterUrl[$strParamName])) {
@@ -213,7 +223,7 @@ class Register extends SimpleLookup
         $GLOBALS['MM_FILTER_PARAMS'][] = $strParamName;
 
         return [
-            $this->getParamName() => $this->prepareFrontendFilterWidget(
+            $strParamName => $this->prepareFrontendFilterWidget(
                 [
                     'label'     => [
                         $this->getLabel(),
