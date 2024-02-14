@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/filter_register.
  *
- * (c) 2012-2019 The MetaModels team.
+ * (c) 2012-2024 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,7 +13,8 @@
  * @package    MetaModels/filter_register
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
- * @copyright  2012-2019 The MetaModels team.
+ * @author     Ingolf Steinhardt <info@e-spin.de>
+ * @copyright  2012-2024 The MetaModels team.
  * @license    https://github.com/MetaModels/filter_register/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -24,22 +25,16 @@ use MetaModels\FilterRegisterBundle\DependencyInjection\MetaModelsFilterRegister
 use MetaModels\FilterRegisterBundle\FilterSetting\RegisterFilterSettingTypeFactory;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 
 /**
  * This test case test the extension.
+ *
+ * @covers \MetaModels\FilterRegisterBundle\DependencyInjection\MetaModelsFilterRegisterExtension
  */
 class MetaModelsFilterRegisterExtensionTest extends TestCase
 {
-    /**
-     * Test that extension can be instantiated.
-     *
-     * @return void
-     *
-     * @coversNothing
-     */
-    public function testInstantiation()
+    public function testInstantiation(): void
     {
         $extension = new MetaModelsFilterRegisterExtension();
 
@@ -47,37 +42,15 @@ class MetaModelsFilterRegisterExtensionTest extends TestCase
         $this->assertInstanceOf(ExtensionInterface::class, $extension);
     }
 
-    /**
-     * Test that the services are loaded.
-     *
-     * @return void
-     *
-     * @coversNothing
-     */
-    public function testFactoryIsRegistered()
+    public function testFactoryIsRegistered(): void
     {
-        $container = $this->getMockBuilder(ContainerBuilder::class)->getMock();
-
-        $container
-            ->expects($this->atLeastOnce())
-            ->method('setDefinition')
-            ->withConsecutive(
-                [
-                    'metamodels.filter_register.factory',
-                    $this->callback(
-                        function ($value) {
-                            /** @var Definition $value */
-                            $this->assertInstanceOf(Definition::class, $value);
-                            $this->assertEquals(RegisterFilterSettingTypeFactory::class, $value->getClass());
-                            $this->assertCount(1, $value->getTag('metamodels.filter_factory'));
-
-                            return true;
-                        }
-                    )
-                ]
-            );
+        $container = new ContainerBuilder();
 
         $extension = new MetaModelsFilterRegisterExtension();
         $extension->load([], $container);
+
+        self::assertTrue($container->hasDefinition('metamodels.filter_register.factory'));
+        $definition = $container->getDefinition('metamodels.filter_register.factory');
+        self::assertCount(1, $definition->getTag('metamodels.filter_factory'));
     }
 }
