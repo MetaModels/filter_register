@@ -70,25 +70,3 @@ $GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['filtermultiple'] = [
     ],
     'sql'                     => 'char(1) NOT NULL default \'\''
 ];
-
-$GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['onlypossible'] = [
-    'label'                   => &$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['onlypossible'],
-    'exclude'                 => true,
-    'default'                 => '1',
-    'inputType'               => 'checkbox',
-    'eval'                    => [
-        'tl_class'            => 'clr w50 m12',
-    ],
-    'sql'                     => 'char(1) NOT NULL default \'1\''
-];
-
-$GLOBALS['TL_DCA']['tl_metamodel_filtersetting']['fields']['skipfilteroptions'] = [
-    'label'                   => &$GLOBALS['TL_LANG']['tl_metamodel_filtersetting']['skipfilteroptions'],
-    'exclude'                 => true,
-    'default'                 => false,
-    'inputType'               => 'checkbox',
-    'eval'                    => [
-        'tl_class'            => 'w50 m12',
-    ],
-    'sql'                     => 'char(1) NOT NULL default \'\''
-];

@@ -106,9 +106,9 @@ class Register extends SimpleLookup
     /**
      * Generate the filter options for the parameters.
      *
-     * @param IAttribute    $objAttribute The attribute to fetch the values from.
-     * @param string[]|null $arrIds       The id list to limit the results to.
-     * @param null|array    $arrCount     The array to use for storing the count.
+     * @param IAttribute        $objAttribute The attribute to fetch the values from.
+     * @param list<string>|null $arrIds       The id list to limit the results to.
+     * @param null|array        $arrCount     The array to use for storing the count.
      *
      * @return array
      */
