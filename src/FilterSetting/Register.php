@@ -236,7 +236,7 @@ class Register extends SimpleLookup
                     'eval'      => [
                         'includeBlankOption' => ($this->get('blankoption')
                                                  && !$objFrontendFilterOptions->isHideClearFilter()),
-                        'blankOptionLabel'   => &$GLOBALS['TL_LANG']['metamodels_frontendfilter']['do_not_filter'],
+                        'blankOptionLabel'   => $this->translator->trans('do_not_filter', [], 'metamodels_filter'),
                         'multiple'           => true,
                         'colname'            => $objAttribute->getColName(),
                         'urlparam'           => $strParamName,
