@@ -29,7 +29,6 @@ namespace MetaModels\FilterRegisterBundle\FilterSetting;
 use MetaModels\Attribute\IAttribute;
 use MetaModels\Filter\IFilter as IMetaModelFilter;
 use MetaModels\Filter\Rules\StaticIdList;
-use MetaModels\Filter\Rules\StaticIdList as MetaModelFilterRuleStaticIdList;
 use MetaModels\Filter\Setting\SimpleLookup;
 use MetaModels\FrontendIntegration\FrontendFilterOptions;
 
@@ -174,13 +173,19 @@ class Register extends SimpleLookup
         if ($strParamValue) {
             $arrIds = [];
             foreach (\explode(',', $strParamValue) as $paramKey) {
-                $arrIds = \array_merge($arrIds, $objAttribute->searchFor($paramKey . '%'));
+                $charResult = $objAttribute->searchFor($paramKey . '%');
+                if (null === $charResult) {
+                    $objFilter->addFilterRule(new StaticIdList(null));
+                    return;
+                }
+                $arrIds = \array_merge($arrIds, $charResult);
             }
-            $objFilter->addFilterRule(new MetaModelFilterRuleStaticIdList($arrIds));
+            $objFilter->addFilterRule(new StaticIdList($arrIds));
+
             return;
         }
 
-        $objFilter->addFilterRule(new MetaModelFilterRuleStaticIdList(null));
+        $objFilter->addFilterRule(new StaticIdList(null));
     }
 
     /**

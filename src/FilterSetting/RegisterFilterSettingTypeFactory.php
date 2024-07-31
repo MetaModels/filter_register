@@ -25,6 +25,7 @@ namespace MetaModels\FilterRegisterBundle\FilterSetting;
 use MetaModels\Filter\FilterUrlBuilder;
 use MetaModels\Filter\Setting\AbstractFilterSettingTypeFactory;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Attribute type factory for from-to filter settings.
@@ -32,27 +33,16 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class RegisterFilterSettingTypeFactory extends AbstractFilterSettingTypeFactory
 {
     /**
-     * The event dispatcher.
-     *
-     * @var EventDispatcherInterface
-     */
-    private $dispatcher;
-
-    /**
-     * The filter URL builder.
-     *
-     * @var FilterUrlBuilder
-     */
-    private $filterUrlBuilder;
-
-    /**
      * {@inheritDoc}
      *
      * @param EventDispatcherInterface $dispatcher       The event dispatcher.
      * @param FilterUrlBuilder         $filterUrlBuilder The filter URL builder.
      */
-    public function __construct(EventDispatcherInterface $dispatcher, FilterUrlBuilder $filterUrlBuilder)
-    {
+    public function __construct(
+        private readonly EventDispatcherInterface $dispatcher,
+        private readonly FilterUrlBuilder $filterUrlBuilder,
+        private readonly TranslatorInterface $translator
+    ) {
         parent::__construct();
 
         $this
@@ -60,9 +50,6 @@ class RegisterFilterSettingTypeFactory extends AbstractFilterSettingTypeFactory
             ->setTypeIcon('bundles/metamodelsfilterregister/filter_register.png')
             ->setTypeClass(Register::class)
             ->allowAttributeTypes('tabletext', 'translatedtext', 'text');
-
-        $this->dispatcher       = $dispatcher;
-        $this->filterUrlBuilder = $filterUrlBuilder;
     }
 
     /**
@@ -74,7 +61,8 @@ class RegisterFilterSettingTypeFactory extends AbstractFilterSettingTypeFactory
             $filterSettings,
             $information,
             $this->dispatcher,
-            $this->filterUrlBuilder
+            $this->filterUrlBuilder,
+            $this->translator
         );
     }
 }
