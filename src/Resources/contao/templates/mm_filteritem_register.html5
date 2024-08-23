@@ -51,10 +51,12 @@ asort($arrFullList);
             $class        .= ' ' . $strListKey;
             $class        .= ' unavailable';
         }
+
+        $urlFragment = $this->urlfragment ? '#' . $this->urlfragment : '';
         ?>
         <li class="<?= $class ?>">
             <?php if ($blnAvailable): ?>
-                <a href="<?= $arrOptions[$strListKey]['href'] ?>" class="<?= $class ?>"
+                <a href="<?= $arrOptions[$strListKey]['href'] . $urlFragment ?>" class="<?= $class ?>"
                    data-escargot-ignore rel="nofollow"
                    title="<?= htmlentities(ucfirst($arrOptions[$strListKey]['value'])) ?>">
                     <?= htmlentities($arrOptions[$strListKey]['value']) ?><?php if ($this->showCount): ?> <span
