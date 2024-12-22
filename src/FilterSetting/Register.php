@@ -26,6 +26,7 @@
 
 namespace MetaModels\FilterRegisterBundle\FilterSetting;
 
+use Contao\StringUtil;
 use MetaModels\Attribute\IAttribute;
 use MetaModels\Filter\IFilter as IMetaModelFilter;
 use MetaModels\Filter\Rules\StaticIdList;
@@ -157,9 +158,9 @@ class Register extends SimpleLookup
      */
     public function prepareRules(IMetaModelFilter $objFilter, $arrFilterUrl)
     {
-        $objMetaModel  = $this->getMetaModel();
-        $objAttribute  = $objMetaModel->getAttributeById((int) $this->get('attr_id'));
-        $strParamName  = $this->getParamName();
+        $objMetaModel = $this->getMetaModel();
+        $objAttribute = $objMetaModel->getAttributeById((int) $this->get('attr_id'));
+        $strParamName = $this->getParamName();
         assert(\is_string($strParamName));
         $strParamValue = $arrFilterUrl[$strParamName];
 
@@ -194,6 +195,7 @@ class Register extends SimpleLookup
      * @SuppressWarnings(PHPMD.Superglobals)
      * @SuppressWarnings(PHPMD.CamelCaseVariableName)
      * @SuppressWarnings(PHPMD.LongVariable)
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function getParameterFilterWidgets(
         $arrIds,
@@ -227,6 +229,8 @@ class Register extends SimpleLookup
 
         $GLOBALS['MM_FILTER_PARAMS'][] = $strParamName;
 
+        $cssID = StringUtil::deserialize($this->get('cssID'), true);
+
         return [
             $strParamName => $this->prepareFrontendFilterWidget(
                 [
@@ -248,7 +252,10 @@ class Register extends SimpleLookup
                         'onlypossible'       => $this->get('onlypossible'),
                         'shownumbers'        => $this->get('shownumbers'),
                         'hideempty'          => $this->get('hideempty'),
-                        'template'           => $this->get('template')
+                        'template'           => $this->get('template'),
+                        'hide_label'         => $this->get('hide_label'),
+                        'cssID'              => !empty($cssID[0]) ? ' id="' . $cssID[0] . '"' : '',
+                        'class'              => !empty($cssID[1]) ? ' ' . $cssID[1] : '',
                     ],
                     // we need to implode again to have it transported correctly in the frontend filter.
                     'urlvalue'  => !empty($arrParamValue) ? \implode(',', $arrParamValue) : ''
