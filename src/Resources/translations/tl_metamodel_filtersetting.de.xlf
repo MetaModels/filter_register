@@ -1,0 +1,34 @@
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
+  <file source-language="en" datatype="plaintext" original="src/Resources/translations/tl_metamodel_filtersetting.en.xlf" target-language="de">
+    <body>
+      <trans-unit id="typenames.register" resname="typenames.register">
+        <source>Register</source>
+        <target>Register</target>
+      </trans-unit>
+      <trans-unit id="shownumbers.label" resname="shownumbers.label">
+        <source>Show numbers</source>
+        <target>Anzeige von Nummern</target>
+      </trans-unit>
+      <trans-unit id="shownumbers.description" resname="shownumbers.description">
+        <source>Here you can choose if numbers should shown or not.</source>
+        <target>Hier können Sie auswählen, ob Zahlen angezeigt werden oder nicht.</target>
+      </trans-unit>
+      <trans-unit id="hideempty.label" resname="hideempty.label">
+        <source>Hide empty values</source>
+        <target>Leere Einträge verbergen</target>
+      </trans-unit>
+      <trans-unit id="hideempty.description" resname="hideempty.description">
+        <source>Here you can choose if empty values should hide or not in the register list.</source>
+        <target>Hier können Sie auswählen, ob leere Felder in der Liste angezeigt werden sollen oder nicht.</target>
+      </trans-unit>
+      <trans-unit id="filtermultiple.label" resname="filtermultiple.label">
+        <source>Filter multiple characters</source>
+        <target>Mehrere Zeichen filtern</target>
+      </trans-unit>
+      <trans-unit id="filtermultiple.description" resname="filtermultiple.description">
+        <source>Here you can allow filtering by several characters.</source>
+        <target>Hier können Sie auswählen, ob nach mehreren Zeichen gefiltert werden kann.</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

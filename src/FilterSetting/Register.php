@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/filter_register.
  *
- * (c) 2012-2020 The MetaModels team.
+ * (c) 2012-2024 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -19,16 +19,17 @@
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @author     Ingolf Steinhardt <info@e-spin.de>
  * @author     Markus Nestmann <markus.nestmann@outlook.com>
- * @copyright  2012-2020 The MetaModels team.
+ * @copyright  2012-2024 The MetaModels team.
  * @license    https://github.com/MetaModels/filter_register/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
 
 namespace MetaModels\FilterRegisterBundle\FilterSetting;
 
+use Contao\StringUtil;
 use MetaModels\Attribute\IAttribute;
 use MetaModels\Filter\IFilter as IMetaModelFilter;
-use MetaModels\Filter\Rules\StaticIdList as MetaModelFilterRuleStaticIdList;
+use MetaModels\Filter\Rules\StaticIdList;
 use MetaModels\Filter\Setting\SimpleLookup;
 use MetaModels\FrontendIntegration\FrontendFilterOptions;
 
@@ -40,7 +41,7 @@ class Register extends SimpleLookup
     /**
      * Retrieve the filter parameter name to react on.
      *
-     * @return string
+     * @return string|null
      */
     protected function getParamName()
     {
@@ -48,7 +49,7 @@ class Register extends SimpleLookup
             return $this->get('urlparam');
         }
 
-        $objAttribute = $this->getMetaModel()->getAttributeById($this->get('attr_id'));
+        $objAttribute = $this->getMetaModel()->getAttributeById((int) $this->get('attr_id'));
         if ($objAttribute) {
             return $objAttribute->getColName();
         }
@@ -105,11 +106,9 @@ class Register extends SimpleLookup
     /**
      * Generate the filter options for the parameters.
      *
-     * @param IAttribute $objAttribute The attribute to fetch the values from.
-     *
-     * @param array      $arrIds       The id list to limit the results to.
-     *
-     * @param null|array $arrCount     The array to use for storing the count.
+     * @param IAttribute        $objAttribute The attribute to fetch the values from.
+     * @param list<string>|null $arrIds       The id list to limit the results to.
+     * @param null|array        $arrCount     The array to use for storing the count.
      *
      * @return array
      */
@@ -124,10 +123,9 @@ class Register extends SimpleLookup
         // Remove empty values.
         foreach ($arrOptions as $mixOptionKey => $mixOptions) {
             // Remove html/php tags.
-            $mixOptions = \strip_tags($mixOptions);
-            $mixOptions = \trim($mixOptions);
+            $mixOptions = \trim(\strip_tags($mixOptions));
 
-            if ($mixOptions === '' || $mixOptions === null) {
+            if ($mixOptions === '') {
                 unset($arrOptions[$mixOptionKey]);
             }
         }
@@ -137,7 +135,7 @@ class Register extends SimpleLookup
 
         // Sort the values, first char uppercase.
         foreach ($arrOptions as $strOptionsKey => $strOptionValue) {
-            if ($strOptionsKey == '-') {
+            if ($strOptionsKey === '-') {
                 continue;
             }
 
@@ -146,7 +144,7 @@ class Register extends SimpleLookup
             $charLowerFirst = \mb_strtolower($strFirstChar);
 
             $arrNewOptions[$charLowerFirst] = $charUpperFist;
-            $arrNewCount[$charLowerFirst]   = ($arrNewCount[$charLowerFirst] + $arrCount[$strOptionsKey]);
+            $arrNewCount[$charLowerFirst]   = (($arrNewCount[$charLowerFirst] ?? 0) + ($arrCount[$strOptionsKey] ?? 0));
         }
 
         $arrOptions = $arrNewOptions;
@@ -160,21 +158,35 @@ class Register extends SimpleLookup
      */
     public function prepareRules(IMetaModelFilter $objFilter, $arrFilterUrl)
     {
-        $objMetaModel  = $this->getMetaModel();
-        $objAttribute  = $objMetaModel->getAttributeById($this->get('attr_id'));
-        $strParamName  = $this->getParamName();
+        $objMetaModel = $this->getMetaModel();
+        $objAttribute = $objMetaModel->getAttributeById((int) $this->get('attr_id'));
+        $strParamName = $this->getParamName();
+        assert(\is_string($strParamName));
         $strParamValue = $arrFilterUrl[$strParamName];
 
-        if ($objAttribute && $strParamName && $strParamValue) {
-            $arrIds = [];
-            foreach (\explode(',', $strParamValue) as $paramKey) {
-                $arrIds = array_merge($arrIds, $objAttribute->searchFor($paramKey . '%'));
-            }
-            $objFilter->addFilterRule(new MetaModelFilterRuleStaticIdList($arrIds));
+        // Check if we have a valid value.
+        if (!$objAttribute) {
+            $objFilter->addFilterRule(new StaticIdList(null));
+
             return;
         }
 
-        $objFilter->addFilterRule(new MetaModelFilterRuleStaticIdList(null));
+        if ($strParamValue) {
+            $arrIds = [];
+            foreach (\explode(',', $strParamValue) as $paramKey) {
+                $charResult = $objAttribute->searchFor($paramKey . '%');
+                if (null === $charResult) {
+                    $objFilter->addFilterRule(new StaticIdList(null));
+                    return;
+                }
+                $arrIds = \array_merge($arrIds, $charResult);
+            }
+            $objFilter->addFilterRule(new StaticIdList($arrIds));
+
+            return;
+        }
+
+        $objFilter->addFilterRule(new StaticIdList(null));
     }
 
     /**
@@ -182,6 +194,8 @@ class Register extends SimpleLookup
      *
      * @SuppressWarnings(PHPMD.Superglobals)
      * @SuppressWarnings(PHPMD.CamelCaseVariableName)
+     * @SuppressWarnings(PHPMD.LongVariable)
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
     public function getParameterFilterWidgets(
         $arrIds,
@@ -189,12 +203,15 @@ class Register extends SimpleLookup
         $arrJumpTo,
         FrontendFilterOptions $objFrontendFilterOptions
     ) {
-        $objAttribute = $this->getMetaModel()->getAttributeById($this->get('attr_id'));
+        $objAttribute = $this->getMetaModel()->getAttributeById((int) $this->get('attr_id'));
+        if (!$objAttribute) {
+            return [];
+        }
 
         $arrCount   = [];
         $arrOptions = $this->getParameterFilterOptions($objAttribute, $arrIds, $arrCount);
 
-        $strParamName = $this->getParamName();
+        $strParamName = $this->getParamName() ?? '';
         // if we have a value, we have to explode it by comma to have a valid value which the active
         // checks may cope with.
         if (\array_key_exists($strParamName, $arrFilterUrl) && !empty($arrFilterUrl[$strParamName])) {
@@ -212,11 +229,13 @@ class Register extends SimpleLookup
 
         $GLOBALS['MM_FILTER_PARAMS'][] = $strParamName;
 
+        $cssID = StringUtil::deserialize($this->get('cssID'), true);
+
         return [
-            $this->getParamName() => $this->prepareFrontendFilterWidget(
+            $strParamName => $this->prepareFrontendFilterWidget(
                 [
                     'label'     => [
-                        ($this->get('label') ? $this->get('label') : $objAttribute->getName()),
+                        $this->getLabel(),
                         'GET: ' . $strParamName
                     ],
                     'inputType' => 'tags',
@@ -226,14 +245,17 @@ class Register extends SimpleLookup
                     'eval'      => [
                         'includeBlankOption' => ($this->get('blankoption')
                                                  && !$objFrontendFilterOptions->isHideClearFilter()),
-                        'blankOptionLabel'   => &$GLOBALS['TL_LANG']['metamodels_frontendfilter']['do_not_filter'],
+                        'blankOptionLabel'   => $this->translator->trans('do_not_filter', [], 'metamodels_filter'),
                         'multiple'           => true,
                         'colname'            => $objAttribute->getColName(),
                         'urlparam'           => $strParamName,
                         'onlypossible'       => $this->get('onlypossible'),
                         'shownumbers'        => $this->get('shownumbers'),
                         'hideempty'          => $this->get('hideempty'),
-                        'template'           => $this->get('template')
+                        'template'           => $this->get('template'),
+                        'hide_label'         => $this->get('hide_label'),
+                        'cssID'              => !empty($cssID[0]) ? ' id="' . $cssID[0] . '"' : '',
+                        'class'              => !empty($cssID[1]) ? ' ' . $cssID[1] : '',
                     ],
                     // we need to implode again to have it transported correctly in the frontend filter.
                     'urlvalue'  => !empty($arrParamValue) ? \implode(',', $arrParamValue) : ''
